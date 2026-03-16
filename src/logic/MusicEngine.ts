@@ -13,16 +13,23 @@ export interface KeySignature {
 export const KEY_SIGNATURES: KeySignature[] = [
   // Treble Clef
   { name: 'C Major (Treble)', clef: 'treble', shortName: 'C', accidentals: { 'A': '', 'B': '', 'C': '', 'D': '', 'E': '', 'F': '', 'G': '' } },
+  { name: 'A Minor (Treble)', clef: 'treble', shortName: 'Am', accidentals: { 'A': '', 'B': '', 'C': '', 'D': '', 'E': '', 'F': '', 'G': '' } },
   { name: 'G Major (Treble)', clef: 'treble', shortName: 'G', accidentals: { 'A': '', 'B': '', 'C': '', 'D': '', 'E': '', 'F': '#', 'G': '' } },
+  { name: 'E Minor (Treble)', clef: 'treble', shortName: 'Em', accidentals: { 'A': '', 'B': '', 'C': '', 'D': '', 'E': '', 'F': '#', 'G': '' } },
   { name: 'D Major (Treble)', clef: 'treble', shortName: 'D', accidentals: { 'A': '', 'B': '', 'C': '#', 'D': '', 'E': '', 'F': '#', 'G': '' } },
+  { name: 'B Minor (Treble)', clef: 'treble', shortName: 'Bm', accidentals: { 'A': '', 'B': '', 'C': '#', 'D': '', 'E': '', 'F': '#', 'G': '' } },
   { name: 'A Major (Treble)', clef: 'treble', shortName: 'A', accidentals: { 'A': '', 'B': '', 'C': '#', 'D': '', 'E': '', 'F': '#', 'G': '#' } },
   { name: 'F Major (Treble)', clef: 'treble', shortName: 'F', accidentals: { 'A': '', 'B': 'b', 'C': '', 'D': '', 'E': '', 'F': '', 'G': '' } },
+  { name: 'D Minor (Treble)', clef: 'treble', shortName: 'Dm', accidentals: { 'A': '', 'B': 'b', 'C': '', 'D': '', 'E': '', 'F': '', 'G': '' } },
   { name: 'Bb Major (Treble)', clef: 'treble', shortName: 'Bb', accidentals: { 'A': '', 'B': 'b', 'C': '', 'D': '', 'E': 'b', 'F': '', 'G': '' } },
+  { name: 'G Minor (Treble)', clef: 'treble', shortName: 'Gm', accidentals: { 'A': '', 'B': 'b', 'C': '', 'D': '', 'E': 'b', 'F': '', 'G': '' } },
   
   // Bass Clef
   { name: 'C Major (Bass)', clef: 'bass', shortName: 'C', accidentals: { 'A': '', 'B': '', 'C': '', 'D': '', 'E': '', 'F': '', 'G': '' } },
+  { name: 'A Minor (Bass)', clef: 'bass', shortName: 'Am', accidentals: { 'A': '', 'B': '', 'C': '', 'D': '', 'E': '', 'F': '', 'G': '' } },
   { name: 'G Major (Bass)', clef: 'bass', shortName: 'G', accidentals: { 'A': '', 'B': '', 'C': '', 'D': '', 'E': '', 'F': '#', 'G': '' } },
   { name: 'F Major (Bass)', clef: 'bass', shortName: 'F', accidentals: { 'A': '', 'B': 'b', 'C': '', 'D': '', 'E': '', 'F': '', 'G': '' } },
+  { name: 'D Minor (Bass)', clef: 'bass', shortName: 'Dm', accidentals: { 'A': '', 'B': 'b', 'C': '', 'D': '', 'E': '', 'F': '', 'G': '' } },
 ];
 
 export class MusicEngine {

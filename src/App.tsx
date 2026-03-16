@@ -14,6 +14,7 @@ function App() {
   
   const [currentKey, setCurrentKey] = useState<KeySignature>(KEY_SIGNATURES[0]);
   const [currentNote, setCurrentNote] = useState<NoteName>('C');
+  const [currentOctave, setCurrentOctave] = useState(4);
   const [choices, setChoices] = useState<string[]>([]);
   const [score, setScore] = useState(0);
   const [timer, setTimer] = useState(0);
@@ -59,6 +60,13 @@ function App() {
     const notes: NoteName[] = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
     const randomNote = notes[Math.floor(Math.random() * notes.length)];
     
+    // Widen range: random octave based on clef (Narrowed for beginners)
+    // Treble: 4 to 5 (Standard staff range)
+    // Bass: 2 to 3 (Standard staff range)
+    const randomOctave = randomKey.clef === 'treble' 
+      ? Math.floor(Math.random() * 2) + 4 
+      : Math.floor(Math.random() * 2) + 2;
+
     const correct = MusicEngine.getEffectiveNote(randomNote, randomKey);
     const newChoices = MusicEngine.generateChoices(correct, mode === 'WITH_KEY');
     
@@ -66,6 +74,7 @@ function App() {
     setTimeout(() => {
       setCurrentKey(randomKey);
       setCurrentNote(randomNote);
+      setCurrentOctave(randomOctave);
       setChoices(newChoices);
       setRound((prev: number) => prev + 1);
       setIsTransitioning(false);
@@ -199,7 +208,7 @@ function App() {
                 type="note" 
                 note={currentNote} 
                 clef={currentKey.clef}
-                octave={currentKey.clef === 'treble' ? 4 : 2}
+                octave={currentOctave}
               />
             </div>
           </div>
