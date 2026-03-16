@@ -22,8 +22,8 @@ const MusicalCard: React.FC<MusicalCardProps> = ({ type, keySignature = 'C', cle
     context.scale(1.2, 1.2);
     
     // Custom styling
-    context.setFillStyle('#1a1a2e');
-    context.setStrokeStyle('#1a1a2e');
+    context.setFillStyle('#2c3e50');
+    context.setStrokeStyle('#2c3e50');
 
     const stave = new Stave(10, 60, 180);
     stave.addClef(clef);

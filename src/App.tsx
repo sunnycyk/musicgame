@@ -78,6 +78,13 @@ function App() {
     const correct = MusicEngine.getEffectiveNote(currentNote, currentKey);
     if (answer === correct) {
       setScore((prev: number) => prev + 1);
+      
+      // Calculate rank and sparkle on correct answer
+      const rect = (document.activeElement as HTMLElement)?.getBoundingClientRect();
+      if (rect) {
+        createSparkles(rect.left + rect.width / 2, rect.top + rect.height / 2);
+      }
+      
       generateNewQuestion();
     } else {
       const btn = document.activeElement as HTMLElement;
@@ -86,19 +93,45 @@ function App() {
     }
   };
 
+  const createSparkles = (x: number, y: number) => {
+    const colors = ['#ff6b81', '#7bed9f', '#70a1ff', '#ffa502', '#ffd32a'];
+    for (let i = 0; i < 15; i++) {
+      const sparkle = document.createElement('div');
+      sparkle.className = 'sparkle';
+      sparkle.style.left = `${x}px`;
+      sparkle.style.top = `${y}px`;
+      sparkle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+      
+      const angle = Math.random() * Math.PI * 2;
+      const dist = 50 + Math.random() * 100;
+      sparkle.style.setProperty('--x', `${Math.cos(angle) * dist}px`);
+      sparkle.style.setProperty('--y', `${Math.sin(angle) * dist}px`);
+      
+      document.body.appendChild(sparkle);
+      setTimeout(() => sparkle.remove(), 1000);
+    }
+  };
+
+  const getRanking = (time: number) => {
+    if (time < 60) return { title: 'Music Star 🌟', rank: 'S' };
+    if (time < 120) return { title: 'Rhythm Hero 🎸', rank: 'A' };
+    return { title: 'Note Learner 🎵', rank: 'B' };
+  };
+
   if (gameState === 'MENU') {
     return (
       <div className="game-container menu-container">
-        <h1 className="menu-title">Musical Flashcards</h1>
+        <h1 className="menu-title">Musical Playground</h1>
         <div className="name-input-group">
           <input 
             type="text" 
-            placeholder="Enter Your Name" 
+            placeholder="What's your name?" 
             value={playerName}
             onChange={(e) => setPlayerName(e.target.value)}
             className="name-input"
           />
         </div>
+        <p style={{ fontSize: '1.5rem', fontWeight: 900, color: '#ff6b81', marginBottom: '1rem' }}>Ready to start your adventure?</p>
         <div className="mode-selection">
           <button 
             className="menu-button" 
@@ -120,18 +153,19 @@ function App() {
   }
 
   if (gameState === 'GAMEOVER') {
+    const rankInfo = getRanking(timer);
     return (
       <div className="game-container game-over">
-        <h1 className="menu-title">Session Complete!</h1>
+        <h1 className="menu-title">Great Job!</h1>
         <div className="stats-results">
-          <p className="player-highlight">{playerName}</p>
-          <p>Total Time: <span className="time-highlight">{timer}s</span></p>
-          <p>Questions Answered: {score} / {MAX_ROUNDS}</p>
+          <p className="player-highlight">{playerName}!</p>
+          <p style={{ fontSize: '1.8rem', fontWeight: 900 }}>You finished in <span className="time-highlight">{timer} seconds!</span></p>
+          <p style={{ fontSize: '1.5rem' }}>Notes Found: {score} out of {MAX_ROUNDS}</p>
           <p className="ranking-label">
-            Rank: {timer < 60 ? 'Mozart (S)' : timer < 120 ? 'Beethoven (A)' : 'Student (B)'}
+            Your Rank: {rankInfo.title}
           </p>
         </div>
-        <button className="menu-button" onClick={() => setGameState('MENU')}>Main Menu</button>
+        <button className="menu-button" onClick={() => setGameState('MENU')}>Play Again! 🎨</button>
       </div>
     );
   }

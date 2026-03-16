@@ -1,22 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap');
+
 body {
   margin: 0;
   display: flex;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
-  background: #0a0a0f;
+  background: #e0f7fa;
   background-image: 
-    linear-gradient(rgba(10, 10, 15, 0.8), rgba(10, 10, 15, 0.8)),
-    url('/composers-bg.jpg');
+    linear-gradient(rgba(224, 247, 250, 0.3), rgba(224, 247, 250, 0.3)),
+    url('/playground-bg.jpg');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
-  font-family: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: 'Nunito', sans-serif;
 }
 
 #root {
   width: 100%;
-  max-width: 1280px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 1rem;
   text-align: center;
@@ -25,28 +27,25 @@ body {
 .game-container {
   display: flex;
   flex-direction: column;
-  min-height: 80vh;
+  min-height: 85vh;
   justify-content: space-between;
-  background: rgba(26, 26, 46, 0.4);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 215, 0, 0.1);
-  border-radius: 30px;
-  padding: 2rem;
-  color: white;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(5px);
+  border: 8px solid #ff69b4;
+  border-radius: 50px;
+  padding: 2.5rem;
+  color: #2c3e50;
+  box-shadow: 0 20px 0 #ffb6c1, 0 30px 60px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
 
 .menu-title {
-  font-size: clamp(2.5rem, 8vw, 4rem);
-  line-height: 1.1;
-  font-weight: 800;
+  font-size: clamp(3rem, 10vw, 5rem);
+  line-height: 1;
+  font-weight: 900;
   margin-bottom: 2rem;
-  padding: 0 1rem;
-  background: linear-gradient(to right, #ffd700, #ff64b6);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #ff4757;
+  text-shadow: 4px 4px 0 #ffd32a;
   letter-spacing: -1px;
 }
 
@@ -55,77 +54,85 @@ body {
 }
 
 .name-input {
-  background: rgba(255, 255, 255, 0.05);
-  border: 2px solid rgba(255, 215, 0, 0.3);
-  border-radius: 15px;
-  padding: 1.2rem 2rem;
-  font-size: 1.5rem;
-  color: white;
+  background: #f1f2f6;
+  border: 4px solid #7bed9f;
+  border-radius: 25px;
+  padding: 1.5rem;
+  font-size: 1.8rem;
+  color: #2f3542;
   width: 100%;
-  max-width: 400px;
+  max-width: 450px;
   text-align: center;
-  transition: border-color 0.3s, box-shadow 0.3s;
+  transition: transform 0.2s, border-color 0.2s;
+  box-shadow: inset 0 4px 0 rgba(0,0,0,0.05);
 }
 
 .name-input:focus {
   outline: none;
-  border-color: #ffd700;
-  box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+  border-color: #2ecc71;
+  transform: scale(1.02);
 }
 
 .mode-selection {
   display: flex;
-  gap: 1.5rem;
+  gap: 2rem;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .menu-button {
-  background: linear-gradient(135deg, #1e1e3f 0%, #0a0a0f 100%);
-  border: 1px solid rgba(255, 215, 0, 0.4);
-  color: #ffd700;
-  padding: 1.5rem 2.5rem;
-  font-size: 1.2rem;
-  font-weight: 600;
-  border-radius: 15px;
+  background: #ff6b81;
+  border: none;
+  border-bottom: 8px solid #ee5253;
+  color: white;
+  padding: 1.5rem 3rem;
+  font-size: 1.5rem;
+  font-weight: 900;
+  border-radius: 30px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  min-width: 250px;
+  transition: all 0.1s;
+  min-width: 280px;
+  text-transform: uppercase;
 }
 
 .menu-button:hover:not(:disabled) {
-  transform: translateY(-5px);
-  border-color: #ffd700;
-  box-shadow: 0 10px 30px rgba(255, 215, 0, 0.1);
-  background: linear-gradient(135deg, #2a2a5a 0%, #1a1a2e 100%);
+  transform: translateY(2px);
+  border-bottom-width: 4px;
+  background: #ff4757;
+}
+
+.menu-button:active:not(:disabled) {
+  transform: translateY(6px);
+  border-bottom-width: 0px;
 }
 
 .menu-button:disabled {
-  opacity: 0.3;
+  background: #ced4da;
+  border-bottom-color: #adb5bd;
   cursor: not-allowed;
-  filter: grayscale(1);
+  opacity: 0.7;
 }
 
 .game-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 1.2rem;
   margin-bottom: 2rem;
 }
 
 .stat-box {
-  background: rgba(255, 255, 255, 0.05);
-  padding: 0.8rem 1.8rem;
-  border-radius: 40px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  min-width: 150px;
+  background: #70a1ff;
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 25px;
+  font-size: 1.4rem;
+  font-weight: 900;
+  box-shadow: 0 6px 0 #1e90ff;
 }
 
 .stat-box.headline {
-  background: linear-gradient(45deg, rgba(255, 215, 0, 0.15), rgba(255, 100, 182, 0.15));
-  border-color: rgba(255, 215, 0, 0.3);
-  font-weight: 700;
-  color: #ffd700;
+  background: #ffa502;
+  box-shadow: 0 6px 0 #ff7b00;
 }
 
 .cards-area {
@@ -137,7 +144,7 @@ body {
 
 .card-container {
   display: flex;
-  gap: 3rem;
+  gap: 4rem;
   perspective: 1000px;
 }
 
@@ -149,27 +156,31 @@ body {
 }
 
 .card-label {
-  font-size: 1rem;
-  font-weight: 700;
-  color: rgba(255, 215, 0, 0.6);
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: #ff6b81;
   text-transform: uppercase;
-  letter-spacing: 3px;
+  background: #fff;
+  padding: 0.5rem 1.5rem;
+  border-radius: 15px;
+  box-shadow: 4px 4px 0 #ff6b81;
 }
 
 .card {
-  width: 240px;
-  height: 300px;
+  width: 260px;
+  height: 320px;
   background: white;
-  border-radius: 25px;
+  border: 8px solid #f1f2f6;
+  border-radius: 35px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
-  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08), 0 10px 0 #f1f2f6;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .card:hover {
-  transform: translateY(-15px) rotateY(10deg);
+  transform: translateY(-10px) rotate(-2deg) scale(1.05);
 }
 
 .answers-area {
@@ -180,47 +191,55 @@ body {
 }
 
 .answer-box {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 215, 0, 0.3);
-  color: #ffd700;
-  padding: 1.5rem 3rem;
-  font-size: 2.5rem;
-  font-weight: 700;
-  border-radius: 20px;
+  background: #2ed573;
+  border: none;
+  border-bottom: 8px solid #26af60;
+  color: white;
+  padding: 1.5rem 3.5rem;
+  font-size: 3rem;
+  font-weight: 900;
+  border-radius: 25px;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  min-width: 160px;
+  transition: all 0.1s;
+  min-width: 180px;
 }
 
 .answer-box:hover {
-  background: rgba(255, 215, 0, 0.1);
-  border-color: #ffd700;
-  transform: translateY(-8px) scale(1.05);
+  transform: translateY(2px);
+  border-bottom-width: 4px;
 }
 
 .answer-box:active {
-  transform: scale(0.95);
+  transform: translateY(6px);
+  border-bottom-width: 0;
+}
+
+.answer-box:active {
+  transform: translateY(6px);
+  border-bottom-width: 0;
 }
 
 .fade-in {
-  animation: fadeIn 0.4s ease-out forwards;
+  animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
 }
 
 .fade-out {
   opacity: 0;
-  transform: scale(0.9) translateY(20px);
-  transition: all 0.4s ease-in;
+  transform: scale(0.8) rotate(5deg);
+  transition: all 0.3s ease-in;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(1.1) translateY(-20px); }
-  to { opacity: 1; transform: scale(1) translateY(0); }
+@keyframes bounceIn {
+  0% { transform: scale(0.3); opacity: 0; }
+  50% { transform: scale(1.05); opacity: 1; }
+  70% { transform: scale(0.9); }
+  100% { transform: scale(1); }
 }
 
 .shake {
   animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
-  border-color: #ff4d4d !important;
-  color: #ff4d4d !important;
+  background: #ff4757 !important;
+  border-bottom-color: #ee5253 !important;
 }
 
 @keyframes shake {
@@ -231,27 +250,45 @@ body {
 }
 
 .stats-results {
-  background: rgba(255, 255, 255, 0.05);
+  background: #f1f2f6;
   padding: 3rem;
-  border-radius: 25px;
+  border-radius: 35px;
   margin-bottom: 2rem;
+  border: 4px dashed #7bed9f;
 }
 
 .player-highlight {
-  font-size: 3rem;
-  font-weight: 800;
-  color: #ffd700;
+  font-size: 3.5rem;
+  font-weight: 900;
+  color: #ff6b81;
   margin-bottom: 1rem;
 }
 
 .time-highlight {
-  color: #ff64b6;
-  font-weight: 800;
+  color: #1e90ff;
+  font-weight: 900;
 }
 
 .ranking-label {
   margin-top: 2rem;
-  font-size: 1.5rem;
-  font-style: italic;
-  color: rgba(255, 215, 0, 0.8);
+  font-size: 2rem;
+  font-weight: 900;
+  color: #ffa502;
+  text-transform: uppercase;
+}
+
+/* Confetti Sparkles */
+.sparkle {
+  position: absolute;
+  pointer-events: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  animation: popOut 1s ease-out forwards;
+  z-index: 100;
+}
+
+@keyframes popOut {
+  0% { transform: translate(0, 0) scale(1); opacity: 1; }
+  100% { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; }
 }
