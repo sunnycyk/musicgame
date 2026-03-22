@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import './App.css';
 import type { KeySignature, NoteName } from './logic/MusicEngine';
 import { MusicEngine, KEY_SIGNATURES } from './logic/MusicEngine';
+import { SoundEngine } from './logic/SoundEngine';
 import MusicalCard from './components/MusicalCard';
 
 type GameState = 'MENU' | 'PLAYING' | 'GAMEOVER';
@@ -41,8 +42,12 @@ function App() {
     return () => clearInterval(interval);
   }, [gameState, round]);
 
-  const startGame = (mode: GameMode) => {
+  const startGame = async (mode: GameMode) => {
     if (!playerName.trim()) return;
+    
+    // Initialize audio context on first user interaction
+    await SoundEngine.init();
+
     setGameMode(mode);
     setScore(0);
     setTimer(0);
@@ -93,9 +98,16 @@ function App() {
     if (isTransitioning || gameState !== 'PLAYING') return;
 
     const correct = MusicEngine.getEffectiveNote(currentNote, currentKey);
+    
+    // Determine note string to play (e.g. C#4 instead of C#)
+    let noteToPlay = answer.replace('b', 'b').replace('#', '#'); 
+    SoundEngine.playNote(noteToPlay, currentOctave);
+
     if (answer === correct) {
       setScore((prev: number) => prev + 1);
       
+      SoundEngine.playSuccessSound();
+
       // Calculate rank and sparkle on correct answer
       const rect = (document.activeElement as HTMLElement)?.getBoundingClientRect();
       if (rect) {
