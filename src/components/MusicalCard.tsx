@@ -2,14 +2,24 @@ import { useEffect, useRef } from 'react';
 import { Renderer, Stave, StaveNote, Formatter } from 'vexflow';
 
 interface MusicalCardProps {
-  type: 'key' | 'note';
+  type: 'key' | 'note' | 'both';
   keySignature?: string;
   clef?: 'treble' | 'bass';
   note?: string;
   octave?: number;
+  width?: number;
+  height?: number;
 }
 
-const MusicalCard: React.FC<MusicalCardProps> = ({ type, keySignature = 'C', clef = 'treble', note, octave = 4 }) => {
+const MusicalCard: React.FC<MusicalCardProps> = ({ 
+  type, 
+  keySignature = 'C', 
+  clef = 'treble', 
+  note, 
+  octave = 4,
+  width = 240,
+  height = 300
+}) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -17,9 +27,10 @@ const MusicalCard: React.FC<MusicalCardProps> = ({ type, keySignature = 'C', cle
     containerRef.current.innerHTML = '';
 
     const renderer = new Renderer(containerRef.current, Renderer.Backends.SVG);
-    renderer.resize(240, 300);
+    renderer.resize(width, height);
     const context = renderer.getContext();
-    context.scale(1.2, 1.2);
+    const scale = width / 200; // Base scale on width
+    context.scale(scale, scale);
     
     // Custom styling
     context.setFillStyle('#2c3e50');
@@ -28,13 +39,13 @@ const MusicalCard: React.FC<MusicalCardProps> = ({ type, keySignature = 'C', cle
     const stave = new Stave(10, 60, 180);
     stave.addClef(clef);
     
-    if (type === 'key') {
+    if (type === 'key' || type === 'both') {
       stave.addKeySignature(keySignature);
     }
     
     stave.setContext(context).draw();
 
-    if (type === 'note' && note) {
+    if ((type === 'note' || type === 'both') && note) {
       const staveNote = new StaveNote({
         clef: clef,
         keys: [`${note.toLowerCase()}/${octave}`],

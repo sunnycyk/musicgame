@@ -20,8 +20,16 @@ function App() {
   const [timer, setTimer] = useState(0);
   const [round, setRound] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   
   const MAX_ROUNDS = 30;
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(max-width: 768px)');
+    const handleMobileChange = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mediaQuery.addEventListener('change', handleMobileChange);
+    return () => mediaQuery.removeEventListener('change', handleMobileChange);
+  }, []);
 
   useEffect(() => {
     let interval: number;
@@ -189,29 +197,52 @@ function App() {
 
       <main className="cards-area">
         <div className={`card-container ${isTransitioning ? 'fade-out' : 'fade-in'}`}>
-          {gameMode === 'WITH_KEY' && (
+          {isMobile ? (
             <div className="card-wrapper">
-              <span className="card-label">Key Signature</span>
+              <span className="card-label">{gameMode === 'WITH_KEY' ? 'Key & Note' : 'Note'}</span>
               <div className="card">
                 <MusicalCard 
-                  type="key" 
+                  type={gameMode === 'WITH_KEY' ? 'both' : 'note'} 
                   keySignature={currentKey.shortName} 
                   clef={currentKey.clef} 
+                  note={currentNote}
+                  octave={currentOctave}
+                  width={isMobile ? 200 : 240}
+                  height={isMobile ? 240 : 300}
                 />
               </div>
             </div>
+          ) : (
+            <>
+              {gameMode === 'WITH_KEY' && (
+                <div className="card-wrapper">
+                  <span className="card-label">Key Signature</span>
+                  <div className="card">
+                    <MusicalCard 
+                      type="key" 
+                      keySignature={currentKey.shortName} 
+                      clef={currentKey.clef} 
+                      width={240}
+                      height={300}
+                    />
+                  </div>
+                </div>
+              )}
+              <div className="card-wrapper">
+                <span className="card-label">Note</span>
+                <div className="card">
+                  <MusicalCard 
+                    type="note" 
+                    note={currentNote} 
+                    clef={currentKey.clef}
+                    octave={currentOctave}
+                    width={240}
+                    height={300}
+                  />
+                </div>
+              </div>
+            </>
           )}
-          <div className="card-wrapper">
-            <span className="card-label">Note</span>
-            <div className="card">
-              <MusicalCard 
-                type="note" 
-                note={currentNote} 
-                clef={currentKey.clef}
-                octave={currentOctave}
-              />
-            </div>
-          </div>
         </div>
       </main>
 
