@@ -13,10 +13,25 @@ export class SoundEngine {
     'Nice one!',
   ];
 
+  private static failMessages = [
+    'Oops!',
+    'Try again!',
+    'Not quite!',
+    'Boo!',
+    'Oh no!',
+  ];
+
   public static async init() {
     if (this.isInitialized) return;
     try {
       await Tone.start();
+      
+      // "Unlock" SpeechSynthesis on mobile Safari by speaking an empty string on first user gesture
+      if ('speechSynthesis' in window) {
+        const unlockUtterance = new SpeechSynthesisUtterance('');
+        unlockUtterance.volume = 0;
+        window.speechSynthesis.speak(unlockUtterance);
+      }
       // Use a PolySynth for simple tone generation
       this.synth = new Tone.PolySynth(Tone.Synth, {
         oscillator: { type: 'sine' },
@@ -62,6 +77,25 @@ export class SoundEngine {
     
     utterance.rate = 1.1; // Slightly faster for excitement
     utterance.pitch = 1.2; // Slightly higher pitch
+    window.speechSynthesis.speak(utterance);
+  }
+
+  public static playFailSound() {
+    if (!('speechSynthesis' in window)) return;
+    
+    window.speechSynthesis.cancel();
+
+    const message = this.failMessages[Math.floor(Math.random() * this.failMessages.length)];
+    const utterance = new SpeechSynthesisUtterance(message);
+    
+    const voices = window.speechSynthesis.getVoices();
+    const englishVoices = voices.filter(v => v.lang.startsWith('en'));
+    if (englishVoices.length > 0) {
+      utterance.voice = englishVoices.find(v => v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('Alex')) || englishVoices[0];
+    }
+    
+    utterance.rate = 1.0; 
+    utterance.pitch = 0.8; // Lower pitch for failure
     window.speechSynthesis.speak(utterance);
   }
 }

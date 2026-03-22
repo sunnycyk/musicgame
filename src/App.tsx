@@ -20,6 +20,7 @@ function App() {
   const [score, setScore] = useState(0);
   const [timer, setTimer] = useState(0);
   const [round, setRound] = useState(0);
+  const [incorrectGuesses, setIncorrectGuesses] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   
@@ -52,6 +53,7 @@ function App() {
     setScore(0);
     setTimer(0);
     setRound(0);
+    setIncorrectGuesses(0);
     setGameState('PLAYING');
     generateNewQuestion(mode);
   };
@@ -116,6 +118,9 @@ function App() {
       
       generateNewQuestion();
     } else {
+      setIncorrectGuesses((prev: number) => prev + 1);
+      SoundEngine.playFailSound();
+      
       const btn = document.activeElement as HTMLElement;
       btn?.classList.add('shake');
       setTimeout(() => btn?.classList.remove('shake'), 500);
@@ -141,10 +146,14 @@ function App() {
     }
   };
 
-  const getRanking = (time: number) => {
-    if (time < 60) return { title: 'Music Star 🌟', rank: 'S' };
-    if (time < 120) return { title: 'Rhythm Hero 🎸', rank: 'A' };
-    return { title: 'Note Learner 🎵', rank: 'B' };
+  const getRanking = (time: number, mistakes: number) => {
+    const penaltyTime = mistakes * 3; // 3 seconds penalty per wrong guess
+    const totalEffectiveTime = time + penaltyTime;
+    
+    // Adjusted thresholds slightly to account for penalties
+    if (totalEffectiveTime < 90) return { title: 'Music Star 🌟', rank: 'S', effectiveTime: totalEffectiveTime, penaltyTime };
+    if (totalEffectiveTime < 150) return { title: 'Rhythm Hero 🎸', rank: 'A', effectiveTime: totalEffectiveTime, penaltyTime };
+    return { title: 'Note Learner 🎵', rank: 'B', effectiveTime: totalEffectiveTime, penaltyTime };
   };
 
   if (gameState === 'MENU') {
@@ -182,19 +191,33 @@ function App() {
   }
 
   if (gameState === 'GAMEOVER') {
-    const rankInfo = getRanking(timer);
+    const rankInfo = getRanking(timer, incorrectGuesses);
     return (
       <div className="game-container game-over">
         <h1 className="menu-title">Great Job!</h1>
         <div className="stats-results">
           <p className="player-highlight">{playerName}!</p>
-          <p style={{ fontSize: '1.8rem', fontWeight: 900 }}>You finished in <span className="time-highlight">{timer} seconds!</span></p>
-          <p style={{ fontSize: '1.5rem' }}>Notes Found: {score} out of {MAX_ROUNDS}</p>
+          <p style={{ fontSize: '1.8rem', fontWeight: 900 }}>
+            Time: <span className="time-highlight">{timer}s</span>
+          </p>
+          {incorrectGuesses > 0 && (
+            <p style={{ fontSize: '1.2rem', color: '#ff6b81' }}>
+              +{incorrectGuesses} mistakes ({rankInfo.penaltyTime}s penalty)
+            </p>
+          )}
+          <p style={{ fontSize: '1.4rem' }}>
+            Effective Time: <strong>{rankInfo.effectiveTime}s</strong>
+          </p>
+          <p style={{ fontSize: '1.5rem', marginTop: '1rem' }}>Notes Found: {score} out of {MAX_ROUNDS}</p>
           <p className="ranking-label">
             Your Rank: {rankInfo.title}
           </p>
         </div>
-        <button className="menu-button" onClick={() => setGameState('MENU')}>Play Again! 🎨</button>
+        <div className="mode-selection" style={{ marginTop: '2rem' }}>
+          <button className="menu-button" style={{ background: '#7bed9f' }} onClick={() => setGameState('MENU')}>
+            Play Again! 🎨
+          </button>
+        </div>
       </div>
     );
   }
